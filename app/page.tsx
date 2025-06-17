@@ -2,9 +2,10 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { AnimatedBackground, FloatingElements } from "@/components/animations/animated-background"
+import { GradientButton, ModernButton } from "@/components/ui/gradient-button"
 import { MagneticCursor, MagneticElement } from "@/components/animations/magnetic-cursor"
 import { ParticleSystem } from "@/components/animations/particle-system"
 import {
@@ -73,23 +74,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       <MagneticCursor />
       <ParticleSystem trigger={showParticles} />
-
-      {/* Modern Grid Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
-        <motion.div
-          className="absolute inset-0 opacity-30"
-          animate={{
-            background: [
-              "radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)",
-            ],
-          }}
-          transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-        />
-      </div>
+      <AnimatedBackground variant="gaming" />
+      <FloatingElements />
 
       {/* Header */}
       <motion.header
@@ -152,37 +138,21 @@ export default function HomePage() {
             <div className="flex items-center gap-3">
               <MagneticElement>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="border-white/20 hover:bg-white/10 px-6 py-2 h-auto text-white"
-                    asChild
-                  >
+                  <ModernButton variant="outline" size="md" asChild>
                     <Link href="/login">ログイン</Link>
-                  </Button>
+                  </ModernButton>
                 </motion.div>
               </MagneticElement>
               <MagneticElement>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-6 py-2 h-auto relative overflow-hidden"
+                  <GradientButton
+                    size="md"
                     onClick={() => setShowParticles(true)}
+                    icon={<Sparkles className="w-4 h-4" />}
                     asChild
                   >
-                    <Link href="/register">
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: "0%" }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        無料で始める
-                      </span>
-                    </Link>
-                  </Button>
+                    <Link href="/register">無料で始める</Link>
+                  </GradientButton>
                 </motion.div>
               </MagneticElement>
             </div>
@@ -255,41 +225,22 @@ export default function HomePage() {
             >
               <MagneticElement>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
+                  <GradientButton
                     size="lg"
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-lg px-8 py-4 h-auto relative overflow-hidden"
                     onClick={() => setShowParticles(true)}
+                    icon={<ArrowRight className="w-5 h-5" />}
                     asChild
                   >
-                    <Link href="/register">
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: "0%" }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      <span className="relative z-10 flex items-center gap-2">
-                        今すぐ無料で始める
-                        <ArrowRight className="w-5 h-5" />
-                      </span>
-                    </Link>
-                  </Button>
+                    <Link href="/register">今すぐ無料で始める</Link>
+                  </GradientButton>
                 </motion.div>
               </MagneticElement>
 
               <MagneticElement>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="border-white/20 hover:bg-white/10 text-lg px-8 py-4 h-auto relative overflow-hidden text-white"
-                    asChild
-                  >
-                    <Link href="/browse">
-                      <Play className="w-5 h-5 mr-2" />
-                      デモを見る
-                    </Link>
-                  </Button>
+                  <ModernButton variant="outline" size="lg" icon={<Play className="w-5 h-5" />} asChild>
+                    <Link href="/browse">デモを見る</Link>
+                  </ModernButton>
                 </motion.div>
               </MagneticElement>
             </motion.div>
@@ -529,41 +480,22 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <MagneticElement>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
+                <GradientButton
                   size="lg"
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-lg px-8 py-4 h-auto relative overflow-hidden"
                   onClick={() => setShowParticles(true)}
+                  icon={<Sparkles className="w-5 h-5" />}
                   asChild
                 >
-                  <Link href="/register">
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "0%" }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <span className="relative z-10 flex items-center gap-2">
-                      <Sparkles className="w-5 h-5" />
-                      無料で始める
-                    </span>
-                  </Link>
-                </Button>
+                  <Link href="/register">無料で始める</Link>
+                </GradientButton>
               </motion.div>
             </MagneticElement>
 
             <MagneticElement>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white/20 hover:bg-white/10 text-lg px-8 py-4 h-auto text-white"
-                  asChild
-                >
-                  <Link href="/browse">
-                    <Play className="w-5 h-5 mr-2" />
-                    デモを見る
-                  </Link>
-                </Button>
+                <ModernButton variant="outline" size="lg" icon={<Play className="w-5 h-5" />} asChild>
+                  <Link href="/browse">デモを見る</Link>
+                </ModernButton>
               </motion.div>
             </MagneticElement>
           </div>

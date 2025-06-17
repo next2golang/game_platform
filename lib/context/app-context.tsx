@@ -159,7 +159,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const mockVideos: Video[] = [
       {
-        id: "1",
+        id: "video-1",
         title: "完璧なガンク回避テクニック",
         description: "ミニマップの情報を活用した効果的なガンク回避方法",
         game: "League of Legends",
@@ -167,6 +167,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         authorId: "1",
         authorAvatar: "/placeholder.svg?height=40&width=40",
         thumbnail: "/placeholder.svg?height=200&width=350",
+        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         duration: "0:45",
         views: 1234,
         likes: 89,
@@ -176,7 +177,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         isLiked: false,
       },
       {
-        id: "2",
+        id: "video-2",
         title: "チームファイト時の完璧なポジショニング",
         description: "ADCとして最適なポジションを維持する方法",
         game: "League of Legends",
@@ -184,6 +185,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         authorId: "2",
         authorAvatar: "/placeholder.svg?height=40&width=40",
         thumbnail: "/placeholder.svg?height=200&width=350",
+        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         duration: "1:20",
         views: 2156,
         likes: 156,

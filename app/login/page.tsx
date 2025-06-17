@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Play, ArrowLeft } from "lucide-react"
+import { useI18n } from "@/lib/i18n/hooks"
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,8 @@ export default function LoginPage() {
     rememberMe: false,
   })
 
+  const { t } = useI18n()
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle login logic here
@@ -25,8 +28,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 px-4 sm:px-0">
+      <div className="w-full max-w-md mx-4 sm:mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-4">
@@ -39,20 +42,20 @@ export default function LoginPage() {
             </div>
             <span className="text-xl font-bold text-white">GameAnalyzer</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">ログイン</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">{t("auth.loginTitle")}</h1>
           <p className="text-white/70">アカウントにサインインしてください</p>
         </div>
 
         <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-white">ログイン</CardTitle>
+            <CardTitle className="text-white">{t("auth.loginTitle")}</CardTitle>
             <CardDescription className="text-white/70">メールアドレスとパスワードを入力してください</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">
-                  メールアドレス
+                  {t("auth.email")}
                 </Label>
                 <Input
                   id="email"
@@ -67,7 +70,7 @@ export default function LoginPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white">
-                  パスワード
+                  {t("auth.password")}
                 </Label>
                 <Input
                   id="password"
@@ -88,11 +91,11 @@ export default function LoginPage() {
                     onCheckedChange={(checked) => setFormData({ ...formData, rememberMe: checked as boolean })}
                   />
                   <Label htmlFor="remember" className="text-sm text-white/80">
-                    ログイン状態を保持
+                    {t("auth.rememberMe")}
                   </Label>
                 </div>
                 <Link href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300">
-                  パスワードを忘れた方
+                  {t("auth.forgotPassword")}
                 </Link>
               </div>
 

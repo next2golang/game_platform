@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AnimatedBackground, FloatingElements } from "@/components/animations/animated-background"
 import { MagneticElement } from "@/components/animations/magnetic-cursor"
+import { useI18n } from "@/lib/i18n/hooks"
+import { LanguageSwitcher } from "@/components/ui/language-switcher"
 import {
   Search,
   Play,
@@ -238,6 +240,8 @@ export default function BrowsePage() {
     }
   }
 
+  const { t } = useI18n()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <AnimatedBackground variant="particles" />
@@ -284,6 +288,7 @@ export default function BrowsePage() {
               >
                 <Link href="/register">新規登録</Link>
               </Button>
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
@@ -324,8 +329,8 @@ export default function BrowsePage() {
               />
             </div>
             <div className="flex gap-3">
-              <Select value={selectedGame} onValueChange={setSelectedGame}>
-                <SelectTrigger className="w-48 bg-white/10 border-white/20 text-white">
+              <Select value={selectedGame} onValueChange={setSelectedGame} className="w-full lg:w-48">
+                <SelectTrigger className="w-full lg:w-48 bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="ゲームを選択" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
@@ -353,8 +358,12 @@ export default function BrowsePage() {
                 </SelectContent>
               </Select>
 
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-40 bg-white/10 border-white/20 text-white">
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+                className="w-full lg:w-40 hidden sm:block"
+              >
+                <SelectTrigger className="w-full lg:w-40 bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="カテゴリー" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
@@ -373,8 +382,8 @@ export default function BrowsePage() {
                 </SelectContent>
               </Select>
 
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-32 bg-white/10 border-white/20 text-white">
+              <Select value={sortBy} onValueChange={setSortBy} className="w-full lg:w-32 hidden md:block">
+                <SelectTrigger className="w-full lg:w-32 bg-white/10 border-white/20 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
@@ -440,7 +449,7 @@ export default function BrowsePage() {
                   <h2 className="text-white text-xl font-semibold">{sortedVideos.length}件の動画が見つかりました</h2>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {sortedVideos.map((video, index) => (
                     <motion.div
                       key={video.id}
@@ -457,6 +466,7 @@ export default function BrowsePage() {
                                   src={video.thumbnail || "/placeholder.svg"}
                                   alt={video.title}
                                   className="w-full h-48 object-cover rounded-t-lg"
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-t-lg">
                                   <Play className="w-12 h-12 text-white" />
@@ -481,7 +491,7 @@ export default function BrowsePage() {
                               </Link>
                               <p className="text-white/70 text-sm mb-3 line-clamp-2">{video.description}</p>
 
-                              <div className="flex items-center gap-3 mb-3">
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-3">
                                 <Avatar className="w-8 h-8">
                                   <AvatarImage src={video.authorAvatar || "/placeholder.svg"} />
                                   <AvatarFallback>{video.author[0]}</AvatarFallback>
@@ -495,7 +505,7 @@ export default function BrowsePage() {
                                 </div>
                               </div>
 
-                              <div className="flex items-center justify-between mb-3">
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3">
                                 <div className="flex items-center gap-4 text-sm text-white/60">
                                   <span className="flex items-center gap-1">
                                     <Eye className="w-3 h-3" />

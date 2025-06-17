@@ -31,6 +31,8 @@ import {
   Plus,
 } from "lucide-react"
 import { useApp } from "@/lib/context/app-context"
+import { useI18n } from "@/lib/i18n/hooks"
+import { LanguageSwitcher } from "@/components/ui/language-switcher"
 
 export default function DashboardPage() {
   const { state } = useApp()
@@ -141,6 +143,8 @@ export default function DashboardPage() {
     },
   ])
 
+  const { t } = useI18n()
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       <AnimatedBackground variant="gradient" />
@@ -178,6 +182,7 @@ export default function DashboardPage() {
             </nav>
 
             <div className="flex items-center gap-3">
+              <LanguageSwitcher />
               <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
                 <Bell className="w-4 h-4" />
               </Button>
@@ -203,10 +208,10 @@ export default function DashboardPage() {
         >
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
-                おかえりなさい、{state.user?.username || "ゲーマー"}さん！
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                {t("dashboard.welcome", { username: state.user?.username || "ゲーマー" })}
               </h1>
-              <p className="text-white/70">今日も素晴らしいプレイを分析しましょう</p>
+              <p className="text-white/70">{t("dashboard.todayMessage")}</p>
             </div>
             <div className="flex gap-3">
               <MagneticElement>
@@ -218,7 +223,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { label: "総動画数", value: stats.totalVideos, icon: Play, color: "from-blue-500 to-cyan-500" },
               {
@@ -251,7 +256,7 @@ export default function DashboardPage() {
                         <stat.icon className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <div className="text-2xl font-bold text-white">{stat.value}</div>
+                        <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
                         <div className="text-xs text-white/60">{stat.label}</div>
                       </div>
                     </div>

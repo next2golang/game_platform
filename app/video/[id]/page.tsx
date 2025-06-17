@@ -360,36 +360,41 @@ export default function VideoPage({ params }: { params: { id: string } }) {
                       <span className="text-white/60 text-sm min-w-[50px]">{formatTime(duration)}</span>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Button size="sm" variant="ghost" className="text-white hover:bg-white/10" onClick={togglePlay}>
-                          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="text-white hover:bg-white/10"
+                          onClick={togglePlay}
+                        >
+                          {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                         </Button>
                         <Button
-                          size="sm"
+                          size="icon"
                           variant="ghost"
                           className="text-white hover:bg-white/10"
                           onClick={() => handleSeek([Math.max(0, currentTime - 10)])}
                         >
-                          <SkipBack className="w-4 h-4" />
+                          <SkipBack className="w-5 h-5" />
                         </Button>
                         <Button
-                          size="sm"
+                          size="icon"
                           variant="ghost"
                           className="text-white hover:bg-white/10"
                           onClick={() => handleSeek([Math.min(duration, currentTime + 10)])}
                         >
-                          <SkipForward className="w-4 h-4" />
+                          <SkipForward className="w-5 h-5" />
                         </Button>
 
-                        <div className="flex items-center gap-2 ml-4">
+                        <div className="flex items-center gap-2 ml-4 hidden sm:flex">
                           <Button
-                            size="sm"
+                            size="icon"
                             variant="ghost"
                             className="text-white hover:bg-white/10"
                             onClick={toggleMute}
                           >
-                            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                           </Button>
                           <Slider
                             value={[volume]}
@@ -402,7 +407,7 @@ export default function VideoPage({ params }: { params: { id: string } }) {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 hidden sm:flex">
                           {[0.25, 0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
                             <Button
                               key={rate}
@@ -420,11 +425,11 @@ export default function VideoPage({ params }: { params: { id: string } }) {
                             </Button>
                           ))}
                         </div>
-                        <Button size="sm" variant="ghost" className="text-white hover:bg-white/10">
-                          <Settings className="w-4 h-4" />
+                        <Button size="icon" variant="ghost" className="text-white hover:bg-white/10 hidden sm:flex">
+                          <Settings className="w-5 h-5" />
                         </Button>
-                        <Button size="sm" variant="ghost" className="text-white hover:bg-white/10">
-                          <Maximize className="w-4 h-4" />
+                        <Button size="icon" variant="ghost" className="text-white hover:bg-white/10 hidden sm:flex">
+                          <Maximize className="w-5 h-5" />
                         </Button>
                       </div>
                     </div>
@@ -538,85 +543,123 @@ export default function VideoPage({ params }: { params: { id: string } }) {
             </motion.div>
 
             {/* Comments and Analysis */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="bg-white/5 border-white/10">
-                <TabsTrigger value="comments" className="data-[state=active]:bg-white/10 text-white">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  コメント ({video.comments})
-                </TabsTrigger>
-                <TabsTrigger value="analysis" className="data-[state=active]:bg-white/10 text-white">
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  分析ポイント
-                </TabsTrigger>
-                <TabsTrigger value="transcript" className="data-[state=active]:bg-white/10 text-white">
-                  <Zap className="w-4 h-4 mr-2" />
-                  文字起こし
-                </TabsTrigger>
-              </TabsList>
+            <div className="space-y-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                <TabsList className="bg-white/5 border-white/10">
+                  <TabsTrigger value="comments" className="data-[state=active]:bg-white/10 text-white">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    コメント ({video.comments})
+                  </TabsTrigger>
+                  <TabsTrigger value="analysis" className="data-[state=active]:bg-white/10 text-white">
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    分析ポイント
+                  </TabsTrigger>
+                  <TabsTrigger value="transcript" className="data-[state=active]:bg-white/10 text-white">
+                    <Zap className="w-4 h-4 mr-2" />
+                    文字起こし
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="comments" className="space-y-6">
-                {/* Comment Form */}
-                <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-                  <CardContent className="p-4">
-                    <form onSubmit={handleCommentSubmit} className="space-y-3">
-                      <Textarea
-                        placeholder="コメントを追加..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 resize-none"
-                        rows={3}
-                      />
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" className="text-white hover:bg-white/10" type="button">
-                          キャンセル
-                        </Button>
-                        <GradientButton type="submit" disabled={!newComment.trim()}>
-                          <Send className="w-4 h-4 mr-2" />
-                          投稿
-                        </GradientButton>
-                      </div>
-                    </form>
-                  </CardContent>
-                </Card>
+                <TabsContent value="comments" className="space-y-6">
+                  {/* Comment Form */}
+                  <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                    <CardContent className="p-4">
+                      <form onSubmit={handleCommentSubmit} className="space-y-3">
+                        <Textarea
+                          placeholder="コメントを追加..."
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50 resize-none"
+                          rows={3}
+                        />
+                        <div className="flex justify-end gap-2">
+                          <Button variant="ghost" className="text-white hover:bg-white/10" type="button">
+                            キャンセル
+                          </Button>
+                          <GradientButton type="submit" disabled={!newComment.trim()}>
+                            <Send className="w-4 h-4 mr-2" />
+                            投稿
+                          </GradientButton>
+                        </div>
+                      </form>
+                    </CardContent>
+                  </Card>
 
-                {/* Comments List */}
-                <div className="space-y-4">
-                  {comments.map((comment, index) => (
+                  {/* Comments List */}
+                  <div className="space-y-4">
+                    {comments.map((comment, index) => (
+                      <motion.div
+                        key={comment.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                          <CardContent className="p-4">
+                            <div className="flex gap-3">
+                              <Avatar className="w-10 h-10">
+                                <AvatarImage src={comment.authorAvatar || "/placeholder.svg"} />
+                                <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <span className="text-white font-medium">{comment.author}</span>
+                                  <span className="text-white/60 text-sm">{comment.timestamp}</span>
+                                </div>
+                                <p className="text-white/80 mb-3">{comment.content}</p>
+                                <div className="flex items-center gap-4">
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className={`text-white/60 hover:text-white ${comment.isLiked ? "text-red-400" : ""}`}
+                                  >
+                                    <ThumbsUp className={`w-3 h-3 mr-1 ${comment.isLiked ? "fill-current" : ""}`} />
+                                    {comment.likes}
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
+                                    <Reply className="w-3 h-3 mr-1" />
+                                    返信
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
+                                    <Flag className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="analysis" className="space-y-4">
+                  {analysisPoints.map((point, index) => (
                     <motion.div
-                      key={comment.id}
+                      key={index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                      <Card
+                        className="bg-white/5 border-white/10 backdrop-blur-sm cursor-pointer hover:bg-white/10 transition-colors"
+                        onClick={() => handleSeek([point.time])}
+                      >
                         <CardContent className="p-4">
-                          <div className="flex gap-3">
-                            <Avatar className="w-10 h-10">
-                              <AvatarImage src={comment.authorAvatar || "/placeholder.svg"} />
-                              <AvatarFallback>{comment.author[0]}</AvatarFallback>
-                            </Avatar>
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                              <Target className="w-5 h-5 text-purple-400" />
+                            </div>
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <span className="text-white font-medium">{comment.author}</span>
-                                <span className="text-white/60 text-sm">{comment.timestamp}</span>
-                              </div>
-                              <p className="text-white/80 mb-3">{comment.content}</p>
-                              <div className="flex items-center gap-4">
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  className={`text-white/60 hover:text-white ${comment.isLiked ? "text-red-400" : ""}`}
-                                >
-                                  <ThumbsUp className={`w-3 h-3 mr-1 ${comment.isLiked ? "fill-current" : ""}`} />
-                                  {comment.likes}
-                                </Button>
-                                <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
-                                  <Reply className="w-3 h-3 mr-1" />
-                                  返信
-                                </Button>
-                                <Button size="sm" variant="ghost" className="text-white/60 hover:text-white">
-                                  <Flag className="w-3 h-3" />
-                                </Button>
+                              <h3 className="text-white font-semibold mb-1">{point.title}</h3>
+                              <p className="text-white/70 text-sm mb-2">{point.description}</p>
+                              <div className="flex items-center gap-2">
+                                <Badge className="bg-purple-500/20 text-purple-300 text-xs">
+                                  {formatTime(point.time)}
+                                </Badge>
+                                <Badge variant="outline" className="border-white/20 text-white/60 text-xs">
+                                  {point.type}
+                                </Badge>
                               </div>
                             </div>
                           </div>
@@ -624,56 +667,22 @@ export default function VideoPage({ params }: { params: { id: string } }) {
                       </Card>
                     </motion.div>
                   ))}
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="analysis" className="space-y-4">
-                {analysisPoints.map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card
-                      className="bg-white/5 border-white/10 backdrop-blur-sm cursor-pointer hover:bg-white/10 transition-colors"
-                      onClick={() => handleSeek([point.time])}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                            <Target className="w-5 h-5 text-purple-400" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="text-white font-semibold mb-1">{point.title}</h3>
-                            <p className="text-white/70 text-sm mb-2">{point.description}</p>
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-purple-500/20 text-purple-300 text-xs">
-                                {formatTime(point.time)}
-                              </Badge>
-                              <Badge variant="outline" className="border-white/20 text-white/60 text-xs">
-                                {point.type}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </TabsContent>
-
-              <TabsContent value="transcript" className="space-y-4">
-                <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
-                  <CardContent className="p-6 text-center">
-                    <Zap className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-                    <h3 className="text-white font-semibold mb-2">AI文字起こし</h3>
-                    <p className="text-white/70 mb-4">この動画の文字起こしは現在処理中です。しばらくお待ちください。</p>
-                    <GradientButton>文字起こしを生成</GradientButton>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
+                <TabsContent value="transcript" className="space-y-4">
+                  <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                    <CardContent className="p-6 text-center">
+                      <Zap className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+                      <h3 className="text-white font-semibold mb-2">AI文字起こし</h3>
+                      <p className="text-white/70 mb-4">
+                        この動画の文字起こしは現在処理中です。しばらくお待ちください。
+                      </p>
+                      <GradientButton>文字起こしを生成</GradientButton>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
 
           {/* Sidebar */}
@@ -781,6 +790,51 @@ export default function VideoPage({ params }: { params: { id: string } }) {
             </motion.div>
           </div>
         </div>
+        {/* Related Videos (Mobile) */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
+          className="lg:hidden"
+        >
+          <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+            <CardContent className="p-4">
+              <h3 className="text-white font-semibold mb-4">関連動画</h3>
+              <div className="space-y-3">
+                {relatedVideos.map((relatedVideo, index) => (
+                  <motion.div
+                    key={relatedVideo.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                  >
+                    <MagneticElement>
+                      <Link href={`/video/${relatedVideo.id}`}>
+                        <div className="flex gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+                          <div className="relative">
+                            <img
+                              src={relatedVideo.thumbnail || "/placeholder.svg"}
+                              alt={relatedVideo.title}
+                              className="w-24 h-16 object-cover rounded"
+                            />
+                            <Badge className="absolute bottom-1 right-1 bg-black/80 text-white text-xs">
+                              {relatedVideo.duration}
+                            </Badge>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-white text-sm font-medium line-clamp-2 mb-1">{relatedVideo.title}</h4>
+                            <div className="text-white/60 text-xs">{relatedVideo.author}</div>
+                            <div className="text-white/60 text-xs">{relatedVideo.views} 回視聴</div>
+                          </div>
+                        </div>
+                      </Link>
+                    </MagneticElement>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   )

@@ -415,7 +415,7 @@ export default function LeaderboardPage() {
                         }`}
                       >
                         <CardContent className="p-6">
-                          <div className="flex items-center gap-4">
+                          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
                             {/* Rank */}
                             <div className="flex items-center justify-center w-12 h-12">{getRankIcon(player.rank)}</div>
 
@@ -491,7 +491,7 @@ export default function LeaderboardPage() {
                     <MagneticElement>
                       <Card className="bg-white/5 border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
                         <CardContent className="p-6">
-                          <div className="flex items-center gap-4">
+                          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
                             <div className="flex items-center justify-center w-12 h-12">
                               {getRankIcon(creator.rank)}
                             </div>

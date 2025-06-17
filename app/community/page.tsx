@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AnimatedBackground, FloatingElements } from "@/components/animations/animated-background"
 import { GradientButton } from "@/components/ui/gradient-button"
 import { MagneticElement } from "@/components/animations/magnetic-cursor"
+import { useI18n } from "@/lib/i18n/hooks"
 import {
   MessageCircle,
   Users,
@@ -35,6 +36,7 @@ export default function CommunityPage() {
   const [activeTab, setActiveTab] = useState("discussions")
   const [newPostContent, setNewPostContent] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const { t } = useI18n()
 
   const [discussions] = useState([
     {

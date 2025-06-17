@@ -14,12 +14,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Play, ArrowLeft, Sparkles, User, Mail, Lock, Gamepad2 } from "lucide-react"
 import { useApp } from "@/lib/context/app-context"
 import { useRouter } from "next/navigation"
+import { useI18n } from "@/lib/i18n/hooks"
 
 export default function RegisterPage() {
   const { dispatch } = useApp()
   const router = useRouter()
   const [showFireworks, setShowFireworks] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useI18n()
 
   const [formData, setFormData] = useState({
     username: "",
@@ -165,7 +167,7 @@ export default function RegisterPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              アカウント作成
+              {t("auth.registerTitle")}
             </motion.h1>
             <motion.p
               className="text-white/70"
@@ -193,7 +195,7 @@ export default function RegisterPage() {
                   <h2 className="text-white text-lg font-semibold">新規登録</h2>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-4 sm:mx-auto">
                   <motion.div
                     className="space-y-2"
                     initial={{ opacity: 0, x: -20 }}
@@ -202,7 +204,7 @@ export default function RegisterPage() {
                   >
                     <Label htmlFor="username" className="text-white flex items-center gap-2">
                       <User className="w-4 h-4" />
-                      ユーザー名
+                      {t("auth.username")}
                     </Label>
                     <Input
                       id="username"
@@ -223,7 +225,7 @@ export default function RegisterPage() {
                   >
                     <Label htmlFor="email" className="text-white flex items-center gap-2">
                       <Mail className="w-4 h-4" />
-                      メールアドレス
+                      {t("auth.email")}
                     </Label>
                     <Input
                       id="email"
@@ -244,7 +246,7 @@ export default function RegisterPage() {
                   >
                     <Label htmlFor="password" className="text-white flex items-center gap-2">
                       <Lock className="w-4 h-4" />
-                      パスワード
+                      {t("auth.password")}
                     </Label>
                     <Input
                       id="password"
@@ -265,7 +267,7 @@ export default function RegisterPage() {
                   >
                     <Label htmlFor="confirmPassword" className="text-white flex items-center gap-2">
                       <Lock className="w-4 h-4" />
-                      パスワード確認
+                      {t("auth.confirmPassword")}
                     </Label>
                     <Input
                       id="confirmPassword"

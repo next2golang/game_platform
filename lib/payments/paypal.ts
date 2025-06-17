@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    paypal: any;
+  }
+}
+
 "use client"
 
 export interface PayPalPaymentItem {

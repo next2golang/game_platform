@@ -15,29 +15,26 @@ interface I18nContextType {
 const I18nContext = createContext<I18nContextType | undefined>(undefined)
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false)
   const [language, setLanguageState] = useState<Language>(defaultLanguage)
 
+  // Initialize language on client-side only
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Load language from localStorage or browser preference
-      const saved = localStorage.getItem("language") as Language
-      if (saved && translations[saved]) {
-        setLanguageState(saved)
-      } else {
-        // Detect browser language
-        const browserLang = navigator.language.split("-")[0] as Language
-        if (translations[browserLang]) {
-          setLanguageState(browserLang)
-        }
+    setMounted(true)
+    const saved = localStorage.getItem("language") as Language
+    if (saved && translations[saved]) {
+      setLanguageState(saved)
+    } else {
+      const browserLang = navigator.language.split("-")[0] as Language
+      if (translations[browserLang]) {
+        setLanguageState(browserLang)
       }
     }
   }, [])
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem("language", lang)
-    }
+    localStorage.setItem("language", lang)
   }
 
   const t = (key: string, params?: Record<string, string>): string => {
@@ -74,6 +71,15 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     }
 
     return typeof value === "string" ? value : key
+  }
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <I18nContext.Provider value={{ language: defaultLanguage, setLanguage, t }}>
+        {children}
+      </I18nContext.Provider>
+    )
   }
 
   return (

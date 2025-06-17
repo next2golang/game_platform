@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -329,7 +330,7 @@ export default function BrowsePage() {
               />
             </div>
             <div className="flex gap-3">
-              <Select value={selectedGame} onValueChange={setSelectedGame} className="w-full lg:w-48">
+              <Select value={selectedGame} onValueChange={setSelectedGame}>
                 <SelectTrigger className="w-full lg:w-48 bg-white/10 border-white/20 text-white">
                   <SelectValue placeholder="ゲームを選択" />
                 </SelectTrigger>
@@ -358,12 +359,8 @@ export default function BrowsePage() {
                 </SelectContent>
               </Select>
 
-              <Select
-                value={selectedCategory}
-                onValueChange={setSelectedCategory}
-                className="w-full lg:w-40 hidden sm:block"
-              >
-                <SelectTrigger className="w-full lg:w-40 bg-white/10 border-white/20 text-white">
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-full lg:w-40 bg-white/10 border-white/20 text-white hidden sm:block">
                   <SelectValue placeholder="カテゴリー" />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
@@ -382,8 +379,8 @@ export default function BrowsePage() {
                 </SelectContent>
               </Select>
 
-              <Select value={sortBy} onValueChange={setSortBy} className="w-full lg:w-32 hidden md:block">
-                <SelectTrigger className="w-full lg:w-32 bg-white/10 border-white/20 text-white">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full lg:w-32 bg-white/10 border-white/20 text-white hidden md:block">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
@@ -462,11 +459,16 @@ export default function BrowsePage() {
                           <CardContent className="p-0">
                             <Link href={`/video/${video.id}`}>
                               <div className="relative">
-                                <img
+                                <Image
                                   src={video.thumbnail || "/placeholder.svg"}
                                   alt={video.title}
+                                  width={350}
+                                  height={200}
                                   className="w-full h-48 object-cover rounded-t-lg"
+                                  priority={index < 4}
+                                  loading={index < 4 ? "eager" : "lazy"}
                                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  style={{ color: "transparent" }}
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-t-lg">
                                   <Play className="w-12 h-12 text-white" />
